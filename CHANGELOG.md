@@ -1,7 +1,7 @@
 # Changelog
 
 ## [1.1.5]
-- windows compatability
+- windows compatibility
 
 ## [1.1.4]
 - skipped
