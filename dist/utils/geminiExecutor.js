@@ -1,4 +1,4 @@
-import { executeCommand } from './commandExecutor.js';
+import { executeCommandWithStdin } from './commandExecutor.js';
 import { Logger } from './logger.js';
 import { ERROR_MESSAGES, STATUS_MESSAGES, MODELS, CLI } from '../constants.js';
 import { parseChangeModeOutput, validateChangeModeEdits } from './changeModeParser.js';
@@ -78,11 +78,10 @@ ${prompt_processed}
     if (sandbox) {
         args.push(CLI.FLAGS.SANDBOX);
     }
-    // On Windows with shell:true, quoting is handled by commandExecutor's safeArgs.
-    // Double-quoting here causes positional/flag conflicts.
-    args.push(CLI.FLAGS.PROMPT, prompt_processed);
+    // Pass prompt via stdin to avoid Windows cmd.exe 8191-char limit
+    // and special character corruption with markdown-heavy prompts.
     try {
-        return await executeCommand(CLI.COMMANDS.GEMINI, args, onProgress);
+        return await executeCommandWithStdin(CLI.COMMANDS.GEMINI, args, prompt_processed, onProgress);
     }
     catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
@@ -94,9 +93,8 @@ ${prompt_processed}
             if (sandbox) {
                 fallbackArgs.push(CLI.FLAGS.SANDBOX);
             }
-            fallbackArgs.push(CLI.FLAGS.PROMPT, prompt_processed);
             try {
-                const result = await executeCommand(CLI.COMMANDS.GEMINI, fallbackArgs, onProgress);
+                const result = await executeCommandWithStdin(CLI.COMMANDS.GEMINI, fallbackArgs, prompt_processed, onProgress);
                 Logger.warn(`Successfully executed with ${MODELS.FLASH} fallback.`);
                 await sendStatusMessage(STATUS_MESSAGES.FLASH_SUCCESS);
                 return result;
