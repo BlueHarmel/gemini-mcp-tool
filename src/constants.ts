@@ -26,8 +26,8 @@ export const STATUS_MESSAGES = {
 
 // Models
 export const MODELS = {
-  PRO: "gemini-2.5-pro",
-  FLASH: "gemini-2.5-flash",
+  PRO: "gemini-3-pro-preview",
+  FLASH: "gemini-3-flash-preview",
 } as const;
 
 // MCP Protocol Constants

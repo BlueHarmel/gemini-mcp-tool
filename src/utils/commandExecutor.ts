@@ -10,9 +10,16 @@ export async function executeCommand(
     const startTime = Date.now();
     Logger.commandExecution(command, args, startTime);
 
-    const childProcess = spawn(command, args, {
+    const isWin = process.platform === "win32";
+    // On Windows, shell:true is required for .cmd/.bat executables (like gemini).
+    // When shell:true, args containing spaces/newlines need quoting to prevent splitting.
+    const safeArgs = isWin
+      ? args.map(a => (a.includes(" ") || a.includes("\n") || a.includes("\r")) ? `"${a.replace(/"/g, '\\"')}"` : a)
+      : args;
+
+    const childProcess = spawn(command, safeArgs, {
       env: process.env,
-      shell: false,
+      shell: isWin,
       stdio: ["ignore", "pipe", "pipe"],
     });
 
