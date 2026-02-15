@@ -1,4 +1,4 @@
-import { Tool, Prompt } from "@modelcontextprotocol/sdk/types.js"; // Each tool definition includes its metadata, schema, prompt, and execution logic in one place.
+import { Tool, Prompt, ToolAnnotations } from "@modelcontextprotocol/sdk/types.js"; // Each tool definition includes its metadata, schema, prompt, and execution logic in one place.
 
 import { ToolArguments } from "../constants.js";
 import { ZodTypeAny, ZodError } from "zod";
@@ -8,7 +8,9 @@ export interface UnifiedTool {
   name: string;
   description: string;
   zodSchema: ZodTypeAny;
-  
+
+  annotations?: ToolAnnotations;
+
   prompt?: {
     description: string;
     arguments?: Array<{
@@ -17,7 +19,7 @@ export interface UnifiedTool {
       required: boolean;
     }>;
   };
-  
+
   execute: (args: ToolArguments, onProgress?: (newOutput: string) => void) => Promise<string>;
   category?: 'simple' | 'gemini' | 'utility';
 }
@@ -40,6 +42,7 @@ export function getToolDefinitions(): Tool[] { // get Tool definitions from regi
       name: tool.name,
       description: tool.description,
       inputSchema,
+      ...(tool.annotations && { annotations: tool.annotations }),
     };
   });
 }

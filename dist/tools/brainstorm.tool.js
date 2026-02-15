@@ -108,6 +108,10 @@ export const brainstormTool = {
     name: "brainstorm",
     description: "Generate novel ideas with dynamic context gathering. --> Creative frameworks (SCAMPER, Design Thinking, etc.), domain context integration, idea clustering, feasibility analysis, and iterative refinement.",
     zodSchema: brainstormArgsSchema,
+    annotations: {
+        readOnlyHint: true,
+        openWorldHint: false,
+    },
     prompt: {
         description: "Generate structured brainstorming prompt with methodology-driven ideation, domain context integration, and analytical evaluation framework",
     },

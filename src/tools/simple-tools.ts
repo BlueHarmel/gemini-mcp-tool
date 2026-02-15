@@ -10,6 +10,10 @@ export const pingTool: UnifiedTool = {
   name: "ping",
   description: "Echo",
   zodSchema: pingArgsSchema,
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: false,
+  },
   prompt: {
     description: "Echo test message with structured response.",
   },
@@ -26,6 +30,10 @@ export const helpTool: UnifiedTool = {
   name: "Help",
   description: "receive help information",
   zodSchema: helpArgsSchema,
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: false,
+  },
   prompt: {
     description: "receive help information",
   },

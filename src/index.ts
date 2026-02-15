@@ -35,7 +35,6 @@ const server = new Server(
     capabilities: {
       tools: {},
       prompts: {},
-      notifications: {},
       logging: {},
     },
   },
@@ -162,7 +161,7 @@ function stopProgressUpdates(
 
 // tools/list
 server.setRequestHandler(ListToolsRequestSchema, async (request: ListToolsRequest): Promise<{ tools: Tool[] }> => {
-  return { tools: getToolDefinitions() as unknown as Tool[] };
+  return { tools: getToolDefinitions() };
 });
 
 // tools/get

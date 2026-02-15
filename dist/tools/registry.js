@@ -17,6 +17,7 @@ export function getToolDefinitions() {
             name: tool.name,
             description: tool.description,
             inputSchema,
+            ...(tool.annotations && { annotations: tool.annotations }),
         };
     });
 }
